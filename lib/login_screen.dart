@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-
-import 'book_appointment_screen.dart';
 import 'forgot_password_screen.dart';
 import 'sign_up_screen.dart';
+import 'home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +39,7 @@ class LoginScreen extends StatelessWidget {
                         "assets/WhatsApp Image 2026-03-17 at 14.03.31.jpeg",
                       ),
                     ),
-
                     const SizedBox(height: 20),
-
                     const Text(
                       "Ready for a fresh cut",
                       style: TextStyle(
@@ -44,7 +48,6 @@ class LoginScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     const SizedBox(height: 30),
 
                     Center(
@@ -72,12 +75,24 @@ class LoginScreen extends StatelessWidget {
                         width: 250,
                         child: TextField(
                           textAlign: TextAlign.center,
-                          obscureText: true,
+                          obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                             labelText: "Password",
                             prefixIcon: const Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
@@ -124,11 +139,10 @@ class LoginScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(24),
                             ),
                           ),
-                          onPressed: () => Navigator.push(
+                          onPressed: () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  const BookAppointmentScreen(),
+                              builder: (context) => const HomeScreen(),
                             ),
                           ),
                           child: const Text(
