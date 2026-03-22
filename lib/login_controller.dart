@@ -1,23 +1,23 @@
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  // 🔒 Private reactive variables
+  
   final _username = ''.obs;
   final _password = ''.obs;
 
-  // 👁️ Public getter (read-only outside)
+  
   String get username => _username.value;
   String get password => _password.value;
 
-  // 👁️ Password visibility
+
   final isPasswordVisible = false.obs;
 
-  // 🔁 Toggle password visibility
+  
   void togglePassword() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  // ✏️ Setters
+  
   void setUsername(String value) {
     _username.value = value.trim();
   }
@@ -26,7 +26,7 @@ class LoginController extends GetxController {
     _password.value = value.trim();
   }
 
-  // ✅ Validation
+ 
   String? validate() {
     if (_username.value.isEmpty) {
       return "Username is required";
@@ -40,7 +40,7 @@ class LoginController extends GetxController {
     return null;
   }
 
-  // 🚀 Login logic
+  
   bool login() {
     final error = validate();
 
@@ -49,7 +49,7 @@ class LoginController extends GetxController {
       return false;
     }
 
-    // Simulate success (replace with API later)
+   
     Get.snackbar(
       "Success",
       "Login successful",

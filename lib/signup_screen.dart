@@ -5,7 +5,7 @@ import 'signup_controller.dart';
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
-  // ✅ Use Get.find() (controller already initialized)
+  
   final SignUpController controller = Get.find<SignUpController>();
 
   @override
@@ -49,7 +49,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
 
-                    // ✅ Username (NO Obx)
+                    
                     TextField(
                       onChanged: controller.setUsername,
                       style: const TextStyle(
@@ -80,7 +80,7 @@ class SignUpScreen extends StatelessWidget {
 
                     const SizedBox(height: 15),
 
-                    // ✅ Email (NO Obx)
+                    
                     TextField(
                       onChanged: controller.setEmail,
                       style: const TextStyle(
@@ -111,7 +111,7 @@ class SignUpScreen extends StatelessWidget {
 
                     const SizedBox(height: 15),
 
-                    // ✅ Password (Obx needed)
+                    
                     Obx(
                       () => TextField(
                         onChanged: controller.setPassword,
@@ -166,14 +166,14 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (controller.signUp()) {
-                            // ✅ Use Get.snackbar
+                            
                             Get.snackbar(
                               "Success",
                               "Account created successfully",
                               snackPosition: SnackPosition.BOTTOM,
                             );
 
-                            Get.back(); // instead of Navigator.pop
+                            Get.back(); 
                           }
                         },
                         child: const Text(

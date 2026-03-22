@@ -5,7 +5,7 @@ import 'forgot_password_controller.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
 
-  // ✅ Use Get.find()
+  
   final ForgotPasswordController controller =
       Get.find<ForgotPasswordController>();
 
@@ -50,7 +50,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
 
-                    // ✅ Email (NO Obx)
+                   
                     TextField(
                       onChanged: controller.setEmail,
                       style: const TextStyle(

@@ -8,7 +8,7 @@ import 'home_screen.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  // Use Get.find() (controller should be initialized elsewhere)
+  
   final LoginController controller = Get.find<LoginController>();
 
   @override
@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
 
-                    // ✅ Username (NO Obx)
+                  
                     TextField(
                       onChanged: controller.setUsername,
                       style: const TextStyle(
@@ -83,7 +83,7 @@ class LoginScreen extends StatelessWidget {
 
                     const SizedBox(height: 15),
 
-                    // ✅ Password (Obx needed)
+                    
                     Obx(
                       () => TextField(
                         onChanged: controller.setPassword,
