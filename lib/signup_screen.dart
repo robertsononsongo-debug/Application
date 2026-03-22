@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'forgot_password_controller.dart';
+import 'signup_controller.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  ForgotPasswordScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({super.key});
 
-  // ✅ Use Get.find()
-  final ForgotPasswordController controller =
-      Get.find<ForgotPasswordController>();
+  // ✅ Use Get.find() (controller already initialized)
+  final SignUpController controller = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +26,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                       radius: 40,
                       backgroundColor: Colors.white24,
                       child: Icon(
-                        Icons.lock_reset,
+                        Icons.person_add,
                         size: 40,
                         color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      "Forgot Password?",
+                      "Create Account",
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -49,6 +48,37 @@ class ForgotPasswordScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30),
+
+                    // ✅ Username (NO Obx)
+                    TextField(
+                      onChanged: controller.setUsername,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            blurRadius: 3,
+                            color: Colors.black87,
+                          ),
+                        ],
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.8),
+                        labelText: "Username",
+                        labelStyle: const TextStyle(color: Colors.black),
+                        prefixIcon: const Icon(
+                          Icons.person,
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
 
                     // ✅ Email (NO Obx)
                     TextField(
@@ -79,6 +109,49 @@ class ForgotPasswordScreen extends StatelessWidget {
                       ),
                     ),
 
+                    const SizedBox(height: 15),
+
+                    // ✅ Password (Obx needed)
+                    Obx(
+                      () => TextField(
+                        onChanged: controller.setPassword,
+                        obscureText: !controller.isPasswordVisible.value,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(1, 1),
+                              blurRadius: 3,
+                              color: Colors.black87,
+                            ),
+                          ],
+                        ),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.8),
+                          labelText: "Password",
+                          labelStyle: const TextStyle(color: Colors.black),
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Colors.black,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black,
+                            ),
+                            onPressed: controller.togglePassword,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(24),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 25),
 
                     SizedBox(
@@ -92,22 +165,19 @@ class ForgotPasswordScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          if (controller.sendResetLink()) {
+                          if (controller.signUp()) {
+                            // ✅ Use Get.snackbar
                             Get.snackbar(
                               "Success",
-                              "Reset link sent!",
+                              "Account created successfully",
                               snackPosition: SnackPosition.BOTTOM,
                             );
-                          } else {
-                            Get.snackbar(
-                              "Error",
-                              "Enter a valid email",
-                              snackPosition: SnackPosition.BOTTOM,
-                            );
+
+                            Get.back(); // instead of Navigator.pop
                           }
                         },
                         child: const Text(
-                          "SEND RESET LINK",
+                          "SIGN UP",
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ),

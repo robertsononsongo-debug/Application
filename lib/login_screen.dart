@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_application_1/controller/logincontroller.dart';
+import 'login_controller.dart';
+import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
-import 'sign_up_screen.dart';
 import 'home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final Logincontroller logincontroller = Get.put(Logincontroller());
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+  // Use Get.find() (controller should be initialized elsewhere)
+  final LoginController controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            "assets/WhatsApp Image 2026-03-17 at 14.03.31.jpeg",
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
-                Container(color: Colors.black87),
-          ),
-          Container(color: Colors.black.withAlpha((0.45 * 255).round())),
+          Image.asset("assets/background.jpeg", fit: BoxFit.cover),
           Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -45,34 +26,99 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const CircleAvatar(
-                      radius: 35,
-                      backgroundImage: AssetImage(
-                        "assets/WhatsApp Image 2026-03-17 at 14.03.31.jpeg",
+                      radius: 40,
+                      backgroundColor: Colors.white24,
+                      child: Icon(
+                        Icons.content_cut,
+                        size: 40,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      "Ready for a fresh cut",
+                      "Barbershop",
                       style: TextStyle(
-                        fontSize: 26,
-                        color: Colors.white,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            blurRadius: 3,
+                            color: Colors.black87,
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 30),
 
-                    SizedBox(
-                      width: 250,
-                      child: TextField(
-                        controller: usernameController,
-                        textAlign: TextAlign.center,
+                    // ✅ Username (NO Obx)
+                    TextField(
+                      onChanged: controller.setUsername,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            blurRadius: 3,
+                            color: Colors.black87,
+                          ),
+                        ],
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.8),
+                        labelText: "Username",
+                        labelStyle: const TextStyle(color: Colors.black),
+                        prefixIcon: const Icon(
+                          Icons.person,
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // ✅ Password (Obx needed)
+                    Obx(
+                      () => TextField(
+                        onChanged: controller.setPassword,
+                        obscureText: !controller.isPasswordVisible.value,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(1, 1),
+                              blurRadius: 3,
+                              color: Colors.black87,
+                            ),
+                          ],
+                        ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
-                          labelText: "Username",
-                          prefixIcon: const Icon(Icons.person),
+                          fillColor: Colors.white.withOpacity(0.8),
+                          labelText: "Password",
+                          labelStyle: const TextStyle(color: Colors.black),
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Colors.black,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black,
+                            ),
+                            onPressed: controller.togglePassword,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(24),
+                            borderSide: BorderSide.none,
                           ),
                         ),
                       ),
@@ -80,110 +126,64 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     const SizedBox(height: 15),
 
-                    SizedBox(
-                      width: 250,
-                      child: Obx(
-                        () => TextField(
-                          controller: passwordController,
-                          obscureText: !logincontroller.isPasswordVisible.value,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            labelText: "Password",
-                            prefixIcon: const Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                logincontroller.isPasswordVisible.value
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                logincontroller.togglePassword();
-                              },
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                          ),
+                    TextButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ForgotPasswordScreen(),
                         ),
+                      ),
+                      child: const Text(
+                        "Forgot Password?",
+                        style: TextStyle(color: Colors.white70),
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 25),
 
                     SizedBox(
-                      width: 200,
-                      child: TextButton(
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordScreen(),
-                          ),
-                        ),
-                        child: const Text(
-                          "Forgot Password?",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    SizedBox(
-                      width: 200,
+                      width: 220,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(12),
+                          backgroundColor: Colors.orange,
+                          padding: const EdgeInsets.all(14),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                         onPressed: () {
-                          bool success = logincontroller.login(
-                            usernameController.text,
-                            passwordController.text,
-                          );
-
-                          if (success) {
+                          if (controller.login()) {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
-                              ),
+                              MaterialPageRoute(builder: (_) => HomeScreen()),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("Invalid username or password"),
+                                content: Text(
+                                  "Please enter username and password",
+                                ),
                               ),
                             );
                           }
                         },
                         child: const Text(
                           "LOGIN",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
 
-                    SizedBox(
-                      width: 200,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpScreen(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "Don't have an account? Sign Up",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                    TextButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => SignUpScreen()),
+                      ),
+                      child: const Text(
+                        "Don't have an account? Sign Up",
+                        style: TextStyle(color: Colors.white70),
                       ),
                     ),
                   ],
